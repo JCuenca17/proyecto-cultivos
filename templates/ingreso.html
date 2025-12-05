@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Datos | AgroPredic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="brand"><i class="fa-solid fa-leaf"></i> AgroPredic</a>
+      <div class="nav-menu">
+        <a href="/" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Gestión de Datos</h1>
+        <p class="page-subtitle">Ingresa información de ventas para entrenar el modelo.</p>
+      </header>
+
+      <div class="grid-dashboard" style="grid-template-columns: 1fr 1fr;">
+        <div class="card">
+          <h3 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-pen-to-square"></i> Registro Manual</h3>
+          <form action="/guardar_venta" method="POST">
+            <div class="form-group">
+              <label>Cultivo</label>
+              <select name="cultivo">
+                <option value="Palta">Palta</option>
+                <option value="Mango">Mango</option>
+                <option value="Arándanos">Arándanos</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Fecha de Transacción</label>
+              <input type="date" name="fecha" required />
+            </div>
+
+            <div class="form-group">
+              <label>Volumen (Kg)</label>
+              <input type="number" step="0.01" name="volumen" placeholder="0.00" required />
+            </div>
+
+            <div class="form-group">
+              <label>Precio Unitario (S/.)</label>
+              <input type="number" step="0.01" name="precio" placeholder="0.00" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full"><i class="fa-solid fa-save"></i> Guardar Registro</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-file-csv"></i> Carga Masiva</h3>
+          <div style="background:#f3f4f6; padding:15px; border-radius:6px; margin-bottom:20px; font-size:0.9rem;">
+            <i class="fa-solid fa-circle-info"></i> Sube un archivo <strong>.csv</strong> con las siguientes cabeceras:
+            <br /><code style="background:#e5e7eb; padding:2px 4px; border-radius:4px; display:block; margin-top:5px;">cultivo, fecha, volumen_kg, precio_unitario</code>
+          </div>
+
+          <form action="/cargar_csv" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+              <input type="file" name="archivo_csv" accept=".csv" required style="border: 2px dashed #d1d5db; padding: 2rem; text-align: center;" />
+            </div>
+
+            <button type="submit" class="btn btn-secondary btn-full"><i class="fa-solid fa-upload"></i> Procesar Archivo</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

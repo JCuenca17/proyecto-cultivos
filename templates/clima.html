@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Clima | AgroPredic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="brand"><i class="fa-solid fa-leaf"></i> AgroPredic</a>
+      <div class="nav-menu">
+        <a href="/" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Monitor Climático</h1>
+        <p class="page-subtitle">Registro de variables ambientales para calibración de riesgo.</p>
+      </header>
+
+      <div class="grid-dashboard" style="grid-template-columns: 1fr 300px;">
+        <div class="card">
+          <h3 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-pen-to-square"></i> Nuevo Registro</h3>
+
+          <form action="/guardar_clima" method="POST">
+            <div class="form-group">
+              <label>Fecha del Reporte</label>
+              <input type="date" name="fecha" required />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div class="form-group">
+                <label><i class="fa-solid fa-temperature-half"></i> Temp. Promedio (°C)</label>
+                <input type="number" step="0.1" name="temperatura" placeholder="24.0" required />
+              </div>
+              <div class="form-group">
+                <label><i class="fa-solid fa-cloud-rain"></i> Precipitación (mm)</label>
+                <input type="number" step="0.1" name="precipitacion" placeholder="0.0" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa-solid fa-triangle-exclamation"></i> Fenómeno Climático (Evento)</label>
+              <select name="evento" style="border-left: 4px solid var(--accent-color);">
+                <option value="Ninguno">Ninguno (Condiciones Normales)</option>
+                <option value="El Niño">El Niño (Alto Riesgo / Lluvias)</option>
+                <option value="La Niña">La Niña (Sequía / Frío)</option>
+                <option value="Ola de Calor">Ola de Calor (Estrés Hídrico)</option>
+              </select>
+              <p style="font-size: 0.8rem; color: #6b7280; margin-top: 5px;">* Seleccionar un evento activará automáticamente los protocolos de reducción de riesgo en la predicción.</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full"><i class="fa-solid fa-save"></i> Guardar Variables</button>
+          </form>
+        </div>
+
+        <div>
+          <div class="card" style="background: linear-gradient(to bottom, #fff7ed, #ffffff); border-color: #ffedd5;">
+            <div style="color: #c2410c; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-lightbulb"></i> ¿Por qué registrar esto?
+            </div>
+            <p style="font-size: 0.9rem; color: #431407; margin-bottom: 15px;">El modelo de predicción utiliza estos datos para penalizar el volumen de siembra sugerido.</p>
+            <ul style="font-size: 0.85rem; color: #9a3412; padding-left: 20px;">
+              <li>
+                <strong>El Niño:</strong> Reduce siembra un 20%.
+              </li>
+              <li>
+                <strong>Ola de Calor:</strong> Reduce siembra un 15%.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

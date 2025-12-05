@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Predicción | AgroPredic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="brand"><i class="fa-solid fa-leaf"></i> AgroPredic</a>
+      <div class="nav-menu">
+        <a href="/" class="nav-link"><i class="fa-solid fa-house"></i> Inicio</a>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Análisis Predictivo</h1>
+        <p class="page-subtitle">Generación de escenarios de demanda basados en analítica de datos.</p>
+      </header>
+
+      <div class="card">
+        <form method="POST" style="display: flex; gap: 1rem; align-items: flex-end;">
+          <div style="flex-grow: 1;">
+            <label for="cultivo"><i class="fa-solid fa-seedling"></i> Seleccionar Cultivo</label>
+            <select name="cultivo" required>
+              <option value="Palta">Palta (Persea Americana)</option>
+              <option value="Mango">Mango (Mangifera Indica)</option>
+              <option value="Arándanos">Arándanos (Vaccinium)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="height: 46px;"><i class="fa-solid fa-calculator"></i> Calcular Proyección</button>
+        </form>
+      </div>
+
+      {% if resultado %}
+        {% if resultado.error %}
+          <div class="card" style="border-left: 4px solid var(--danger-color);">
+            <div style="color: var(--danger-color); font-weight: 600;">
+              <i class="fa-solid fa-triangle-exclamation"></i> Error de Procesamiento
+            </div>
+            <p style="margin-top:5px">{{ resultado.mensaje }}</p>
+          </div>
+        {% else %}
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+              <h3 style="margin:0;">Reporte para: <strong>{{ resultado.cultivo }}</strong></h3>
+
+              {% if resultado.es_alerta %}
+                <span class="badge badge-warning"><i class="fa-solid fa-triangle-exclamation"></i> Riesgo Climático Detectado</span>
+              {% else %}
+                <span class="badge badge-success"><i class="fa-solid fa-shield-check"></i> Condiciones Óptimas</span>
+              {% endif %}
+            </div>
+
+            <div style="margin-bottom: 2rem; color: #4b5563; background:#f9fafb; padding:10px; border-radius:6px; font-size:0.9rem;">
+              <i class="fa-solid fa-info-circle"></i> {{ resultado.mensaje_clima }}
+            </div>
+
+            <div class="result-hero">
+              <div style="font-size:0.9rem; color:#6b7280; text-transform:uppercase; letter-spacing:1px; font-weight:600;">Demanda Proyectada</div>
+              <div class="kpi-number">
+                {{ resultado.prediccion_final }} <span style="font-size:1.5rem; color:#6b7280; font-weight:400">Kg</span>
+              </div>
+
+              {% if resultado.es_alerta %}
+                <div style="color:var(--danger-color); font-weight:600; font-size:0.9rem;">
+                  <i class="fa-solid fa-arrow-trend-down"></i> Ajuste aplicado: -{{ resultado.factor_ajuste }}%
+                </div>
+              {% else %}
+                <div style="color:var(--success-color); font-weight:600; font-size:0.9rem;">
+                  <i class="fa-solid fa-arrow-trend-up"></i> Proyección estándar
+                </div>
+              {% endif %}
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <h4 style="font-size:1rem; border-bottom:1px solid #e5e7eb; padding-bottom:10px; margin-bottom:15px;">Desglose Técnico</h4>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div>
+                  <label style="margin-bottom:0">Predicción Base (Histórica)</label>
+                  <div style="font-size:1.1rem; font-weight:600;">{{ resultado.prediccion_base }} Kg</div>
+                </div>
+                <div>
+                  <label style="margin-bottom:0">Dataset Analizado</label>
+                  <div style="font-size:1.1rem; font-weight:600;">{{ resultado.datos_usados }} Registros</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </body>
+</html>

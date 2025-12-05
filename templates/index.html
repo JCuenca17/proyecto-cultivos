@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard | AgroPredic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="brand"><i class="fa-solid fa-leaf"></i> AgroPredic <span style="font-weight:300; opacity:0.7">SaaS</span></a>
+      <div class="nav-menu">
+        <a href="/ingreso" class="nav-link"><i class="fa-solid fa-upload"></i> Ingresos</a>
+        <a href="/clima" class="nav-link"><i class="fa-solid fa-cloud-sun-rain"></i> Clima</a>
+        <a href="/prediccion" class="nav-link"><i class="fa-solid fa-chart-line"></i> Predicción</a>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Panel de Control</h1>
+        <p class="page-subtitle">Visión general del sistema de optimización de cultivos.</p>
+      </header>
+
+      <div class="grid-dashboard">
+        <div class="card stat-card">
+          <div>
+            <div class="icon-box icon-green">
+              <i class="fa-solid fa-sack-dollar"></i>
+            </div>
+            <h3>Registro de Ventas</h3>
+            <p style="color:#6b7280; margin-top:5px; font-size:0.9rem">Gestión de datos históricos y carga masiva.</p>
+          </div>
+          <a href="/ingreso" class="btn btn-secondary btn-full" style="margin-top:15px">Gestionar Datos <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card stat-card">
+          <div>
+            <div class="icon-box icon-orange">
+              <i class="fa-solid fa-temperature-high"></i>
+            </div>
+            <h3>Monitor Climático</h3>
+            <p style="color:#6b7280; margin-top:5px; font-size:0.9rem">Variables ambientales y fenómenos (El Niño).</p>
+          </div>
+          <a href="/clima" class="btn btn-secondary btn-full" style="margin-top:15px">Registrar Evento <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card stat-card">
+          <div>
+            <div class="icon-box icon-purple">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <h3>Motor de Predicción</h3>
+            <p style="color:#6b7280; margin-top:5px; font-size:0.9rem">Algoritmo ponderado para estimación de demanda.</p>
+          </div>
+          <a href="/prediccion" class="btn btn-primary btn-full" style="margin-top:15px">Ejecutar Modelo <i class="fa-solid fa-bolt"></i></a>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <h3 style="font-size:1.1rem;"><i class="fa-solid fa-server"></i> Estado del Sistema</h3>
+          <span class="badge badge-success"><i class="fa-solid fa-check-circle"></i> Operativo</span>
+        </div>
+        <div style="font-size: 0.9rem; color: #6b7280;">
+          El sistema está conectado a la base de datos <strong>SQLite</strong>. Los modelos de predicción están calibrados con la última actualización de tendencias de mercado.
+        </div>
+        <div style="margin-top:15px; text-align:right;">
+          <a href="/ver_datos" style="color:var(--primary-color); text-decoration:none; font-weight:600; font-size:0.9rem">Ver reportes completos →</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
