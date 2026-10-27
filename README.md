@@ -1,124 +1,49 @@
-🌱 AgroPredic: Sistema de Predicción de Demanda Sostenible
+# AgroPredic
 
-Optimización agrícola inteligente: Predicción de demanda basada en datos históricos y ajuste climático en tiempo real para reducir el desperdicio de cultivos (Palta, Mango, Arándanos).
+App web en Flask que estima cuántos kilos conviene producir de palta, mango y arándanos. Parte de las ventas históricas de cada cultivo y ajusta el resultado según el último registro climático, para no sembrar de más cuando hay riesgo.
 
-📖 Descripción del Proyecto
+La hice para el curso de Calidad de Software de la UNSA en 2025, así que buena parte del trabajo estuvo en las pruebas y el análisis de calidad.
 
-AgroPredic es una solución SaaS diseñada para ayudar a los agricultores a tomar decisiones de siembra informadas. El sistema utiliza un algoritmo de promedios ponderados ajustados por tendencias y factores de riesgo climático (como El Niño o La Niña) para calcular el volumen de producción óptimo.
+![Resultado de la predicción para palta](docs/prediccion.jpg)
 
-Este proyecto ha sido desarrollado bajo estrictos estándares de Ingeniería de Software:
+## Cómo calcula la predicción
 
-ISO/IEC 25000 (SQuaRE): Para la gestión de requisitos de calidad, usabilidad y adecuación funcional.
+1. Toma las ventas del cultivo en orden de fecha y saca un promedio ponderado: cada registro pesa más que el anterior, así que los datos recientes cuentan más.
+2. Compara la última venta con el promedio simple. Si está por encima, sube el resultado un 5 %; si está por debajo, lo baja un 5 %.
+3. Mira el último registro de clima. El Niño reduce la cifra un 20 %, una ola de calor (o más de 30 °C) un 15 % y La Niña un 10 %.
 
-ISO/IEC 5055: Para asegurar la integridad estructural, seguridad, fiabilidad y mantenibilidad del código fuente.
+El código está en `predictor.py`.
 
-🚀 Características Principales
+## Pantallas
 
-1. Gestión de Datos
+El panel de inicio lleva a las tres partes de la app: el registro de ventas, el monitor climático y la predicción.
 
-📝 Ingreso Manual: Formulario intuitivo para registrar ventas diarias.
+![Panel de inicio](docs/inicio.jpg)
 
-📂 Carga Masiva: Importación de grandes volúmenes de datos históricos vía CSV.
+Las ventas se pueden registrar una por una o subir en bloque con un CSV de columnas `cultivo, fecha, volumen_kg, precio_unitario`. También hay un reporte de todas las ventas listo para imprimir.
 
-2. Motor de Inteligencia (Predictor)
+![Registro manual y carga masiva](docs/ingreso.jpg)
 
-📊 Algoritmo Ponderado: Da más peso a los datos recientes para detectar tendencias de mercado (+/- 5%).
+En el monitor climático se guarda la temperatura, la precipitación y el fenómeno del momento.
 
-⛈️ Ajuste Climático: Reduce automáticamente la sugerencia de siembra si se detectan riesgos (Ej: "El Niño" reduce un 20%).
+![Monitor climático](docs/clima.jpg)
 
-3. Monitor Climático
+## Pruebas
 
-Registro de temperatura, precipitación y eventos fenomenológicos.
+`tests.py` tiene 7 pruebas con `unittest`: que la web responda, que se guarden los datos, la tendencia de mercado y los escenarios de El Niño, La Niña, ola de calor y clima normal. El análisis estático se hizo con SonarQube.
 
-Sistema de alertas visuales (🟢 Seguro / 🟡 Precaución / 🔴 Peligro).
-
-4. Calidad y Reportes
-
-Reportes de ventas detallados listos para imprimir.
-
-Dashboard con KPIs financieros y operativos.
-
-🛠️ Tecnologías y Herramientas
-
-Backend: Python (Flask)
-
-Base de Datos: SQLite
-
-Frontend: HTML5, CSS3 (Diseño Enterprise/SaaS), FontAwesome
-
-Análisis de Datos: Pandas
-
-Calidad & Testing:
-
-unittest (Pruebas Unitarias / ISO 5055 Dinámica)
-
-SonarQube (Análisis Estático / ISO 5055 Estática)
-
-Jira (Gestión del Proceso / ISO 25000)
-
-⚙️ Instalación y Uso
-
-Sigue estos pasos para ejecutar el proyecto en tu computadora:
-
-Prerrequisitos
-
-Tener instalado Python y Git.
-
-1. Clonar el repositorio
-
-git clone [https://github.com/TU_USUARIO/AgroPredic.git](https://github.com/TU_USUARIO/AgroPredic.git)
-cd AgroPredic
-
-
-2. Crear entorno virtual
-
-python -m venv venv
-# En Windows:
-venv\Scripts\activate
-# En Mac/Linux:
-source venv/bin/activate
-
-
-3. Instalar dependencias
-
-pip install Flask pandas
-
-
-4. Inicializar la Base de Datos
-
-python setup_db.py
-
-
-(Verás un mensaje confirmando que cultivos.db ha sido creada)
-
-5. Ejecutar la Aplicación
-
-python app.py
-
-
-Abre tu navegador y ve a: http://127.0.0.1:5000
-
-🧪 Ejecución de Pruebas de Calidad (ISO 5055)
-
-Para validar la robustez del sistema y verificar que la lógica climática (El Niño/La Niña) funciona correctamente, ejecuta el script de pruebas automatizadas:
-
+```
 python tests.py
+```
 
+## Ejecutarlo
 
-Resultado esperado:
+```
+python -m venv venv
+venv\Scripts\activate
+pip install flask pandas
+python setup_db.py
+python app.py
+```
 
---- EJECUTANDO CERTIFICACIÓN DE CALIDAD COMPLETA ---
-✅ Test 1: Web disponible... OK
-✅ Test 2: Guardado de datos... OK
-✅ Test 3: Lógica de Mercado... OK
-✅ Test 4: Escenario El Niño (-20%)... OK
-...
-Ran 7 tests in 0.05s
-OK
-
-
-Curso: Calidad de Software
-
-Universidad Nacional de San Agustín
-
-Año: 2025
+La app queda en `http://127.0.0.1:5000`. El repositorio ya trae `cultivos.db` con datos de ejemplo. `setup_db.py` crea las tablas si no existen, y `datos_full.csv` sirve para probar la carga masiva.
