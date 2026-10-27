@@ -47,3 +47,5 @@ python app.py
 ```
 
 La app queda en `http://127.0.0.1:5000`. El repositorio ya trae `cultivos.db` con datos de ejemplo. `setup_db.py` crea las tablas si no existen, y `datos_full.csv` sirve para probar la carga masiva.
+
+© 2025 José Luis Cuenca Gutiérrez. Todos los derechos reservados.
